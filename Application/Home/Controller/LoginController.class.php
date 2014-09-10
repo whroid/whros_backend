@@ -11,26 +11,36 @@ use Think\Controller;
 
 class LoginController extends  Controller {
 
-    public function login()
+    public function  index()
     {
-        $user=M('User');//参数的User必须首字母大写，否则自动验证功能失效！
-        $count= $user->count();
-        echo "coun:'.$count'个数";
-        $username=$_GET['username'];
-        $password=$_GET['password'];
-        echo "username=$username AND password = $password";
-
-        $news_list=$user->field(array('id','username','password','createtime'))->select();
-        echo json_encode($news_list);
-        if($user->where("username=$username AND password = $password")->find())
-        {
-            echo '222username:.$username ,password:'.$password;
-            $this->show("username='.$username ' 1111password='.$password");
-        }else{
-            echo '333username:'.$username ,'password:'.$password;
-            $this->error('wo cuo l e 不可能没找到吧');
+        $this->display();
+    }
+    public function login($username = null, $password = null)
+    {
+        if(IS_POST){
+            /* 登录用户 */
+            $Users = D('User');
+            if($Users->login($username, $password)){ //登录用户
+                //TODO:跳转到登录前页面
+                $this->success('登录成功！', U('Index/index'));
+            } else {
+                $this->error($Users->getError());
+            }
+        } else {
+            if(is_login()){
+                $this->redirect('Index/index');
+            }else{
+                $this->error('不支持get请求');
+            }
         }
-
     }
 
+    public function test()
+    {
+        echo 'hello';
+    }
+      public function register()
+    {
+     $this->display();
+    }
 } 
