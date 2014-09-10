@@ -1,0 +1,1 @@
+<?php if (!defined('THINK_PATH')) exit();?>username='.1 ' 1111password='.1
